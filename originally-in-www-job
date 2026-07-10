@@ -1,0 +1,12 @@
+node('testintegration') {
+
+  library identifier: 'recursiveMerge@master', retriever: modernSCM(
+    [$class: 'GitSCMSource',
+     remote: 'https://github.com/ome/jenkins-library-recursivemerge.git'])
+
+  recursiveCheckout(
+    repo: 'www.openmicroscopy.org')
+
+  recursiveMerge(
+    baseRepo: 'www.openmicroscopy.org')
+}
