@@ -1,0 +1,24 @@
+ssh idr3-slot2...
+sudo su
+docker exec -it *testintegration* bash
+
+
+export OMERODIR=/home/omero/workspace/OMERO-test-integration/src/dist
+export ICE_CONFIG=/home/omero/workspace/OMERO-test-integration/src/dist/etc/ice.config
+export OMERO_SESSION_DIR=/tmp/OMERO-test-integration/local
+
+source /home/omero/workspace/OMERO-test-integration/.venv3/bin/activate
+
+echo "$ICE_CONFIG"
+
+grep -E 'omero.host|omero.port|Ice.Default.Router' "$ICE_CONFIG"
+
+
+cd /home/omero/workspace/OMERO-test-integration/src/components/tools/OmeroPy
+
+pytest \
+test/integration/clitest/test_cleanse.py::TestCleanseFullAdmin::testCleanseNonsenseName \
+-vv -s
+
+
+test/integration/clitest/test_pyramids.py::TestRemovePyramidsFullAdmin::test_remove_pyramids_little_endian
