@@ -53,8 +53,11 @@ RUN dnf -y install maven ant && dnf clean all
 
 # install postgres tools for pg16 (default is 13)
 RUN dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-RUN dnf -qy module disable postgresql
-RUN dnf -y install postgresql16-server postgresql16\
+RUN sed -i \
+    's/rhel-\$releasever_major\.\$releasever_minor-/rhel-\$releasever_major-/g' \
+    /etc/yum.repos.d/pgdg-redhat-all.repo && \
+    dnf --disablerepo="pgdg*" -qy module disable postgresql
+RUN dnf -y install postgresql16-server postgresql16 \
     && dnf clean all
 
 # gradle
